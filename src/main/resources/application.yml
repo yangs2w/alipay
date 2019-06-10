@@ -1,0 +1,30 @@
+#====== 设置发布端口号 =====#
+server:
+  port: 8080
+#====== 设置url访问时不带项目名 =====#
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+#====== Mysql Setting  ========#
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.15:3306/payment?useUnicode=true&useCharaterEncoding=utf&useSSL=fase
+    username: root
+    password: wl110511
+  jpa:
+#======= 显示sql ========#
+    show-sql: true
+#======== 设置Freemarker ==========#
+  freemarker:
+    suffix: .ftl
+    charset: utf-8
+    cache: false
+#======= 设置http编码 =======#
+  http:
+    encoding:
+      charset: UTF-8
+logging:
+#======= 日志文件 ========#
+  file: aplipy.log
