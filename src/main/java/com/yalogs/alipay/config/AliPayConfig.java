@@ -10,6 +10,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * @Autor yangs
+ * @Date 2019/10/6 15:26
+ * @Description Alipay的一些配置项，加载配置
+ */
 @Component
 @ConfigurationProperties(prefix = "alipay")
 @PropertySource("classpath:alipayconfig.properties")
