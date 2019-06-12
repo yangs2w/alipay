@@ -1,5 +1,6 @@
 package com.yalogs.alipay;
 
+import com.yalogs.alipay.entity.OrderInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,4 +14,8 @@ public class AlipayApplicationTests {
     public void contextLoads() {
     }
 
+    @Test
+    public void test() {
+        OrderInfo orderInfo = new OrderInfo();
+    }
 }

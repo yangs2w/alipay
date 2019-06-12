@@ -1,7 +1,7 @@
-#====== ÉèÖÃ·¢²¼¶Ë¿ÚºÅ =====#
+#====== ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½Ë¿Úºï¿½ =====#
 server:
   port: 8080
-#====== ÉèÖÃurl·ÃÎÊÊ±²»´øÏîÄ¿Ãû =====#
+#====== ï¿½ï¿½ï¿½ï¿½urlï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ =====#
   servlet:
     context-path: /
   tomcat:
@@ -10,21 +10,26 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.15:3306/payment?useUnicode=true&useCharaterEncoding=utf&useSSL=fase
+    url: jdbc:mysql://10.10.5.102:3306/payment?useUnicode=true&useCharaterEncoding=utf&useSSL=false
     username: root
     password: wl110511
   jpa:
-#======= ÏÔÊ¾sql ========#
+#======= ï¿½ï¿½Ê¾sql ========#
     show-sql: true
-#======== ÉèÖÃFreemarker ==========#
+#======== ï¿½ï¿½ï¿½ï¿½Freemarker ==========#
   freemarker:
     suffix: .ftl
     charset: utf-8
     cache: false
-#======= ÉèÖÃhttp±àÂë =======#
+    template-loader-path: classpath:/templates/
+  #======= ï¿½ï¿½ï¿½ï¿½httpï¿½ï¿½ï¿½ï¿½ =======#
   http:
     encoding:
       charset: UTF-8
 logging:
-#======= ÈÕÖ¾ÎÄ¼ş ========#
+#======= ï¿½ï¿½Ö¾ï¿½Ä¼ï¿½ ========#
   file: aplipy.log
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
