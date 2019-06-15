@@ -1,6 +1,5 @@
 package com.yalogs.alipay.controller;
 
-import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
@@ -19,10 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -170,24 +167,20 @@ public class PayController {
      * @Date 6/12/2019 12:03 AM
      * @Param [request]
      * @Return java.util.Map<java.lang.String,java.lang.String>
-     */  
-    private Map<String, String> getPayParams(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<>(16);
-        Map<String, String[]> requestParams = request.getParameterMap();
-        // 遍历requestParams获取参数
-        Iterator<String> iterator = requestParams.keySet().iterator();
-        while (iterator.hasNext()) {
-            String name = iterator.next();
-            String[] param = requestParams.get(name);
+     */
+    private Map<String,String> getPayParams(HttpServletRequest request) {
+        Map<String,String> params = new HashMap<>(16);
+        Map<String,String[]> requestParams = request.getParameterMap();
+
+        for (String name : requestParams.keySet()) {
+            String[] values = requestParams.get(name);
             String valueStr = "";
-            for (int i = 0; i < param.length; i++) {
-                valueStr = (i == valueStr.length() - 1) ? valueStr + param[i] : valueStr + param[i] + ",";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
             }
-            try {
-                valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            //乱码解决，这段代码在出现乱码时使用
+//            valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
             params.put(name, valueStr);
         }
         return params;

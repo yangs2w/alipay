@@ -4,7 +4,6 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -16,36 +15,35 @@ import org.springframework.stereotype.Component;
  * @Description Alipay的一些配置项，加载配置
  */
 @Component
-@ConfigurationProperties(prefix = "alipay")
 @PropertySource("classpath:alipayconfig.properties")
 @Getter
 public class AliPayConfig {
 
-    @Value("${app_id}")
+    @Value("${alipay.app_id}")
     private String appId;
 
-    @Value("${merchant_private_key}")
+    @Value("${alipay.merchant_private_key}")
     private String merchantPrivateKey;
 
-    @Value("${alipay_public_key}")
+    @Value("${alipay.alipay_public_key}")
     private String alipayPublicKey;
 
-    @Value("${notify_url}")
+    @Value("${alipay.notify_url}")
     private String notifyUrl;
 
-    @Value("${reurn_url}")
+    @Value("${alipay.return_url}")
     private String returnUrl;
 
-    @Value("${sign_type}")
+    @Value("${alipay.sign_type}")
     private String signType;
 
-    @Value("${charset}")
+    @Value("${alipay.charset}")
     private String charset;
 
-    @Value("${gateway_url}")
+    @Value("${alipay.gateway_url}")
     private String gatewayUrl;
 
-    @Value("${seller_id}")
+    @Value("${alipay.uid}")
     private String sellerId;
 
 
@@ -54,4 +52,75 @@ public class AliPayConfig {
         return new DefaultAlipayClient(gatewayUrl, appId, merchantPrivateKey, "json", charset, alipayPublicKey, signType);
     }
 
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getMerchantPrivateKey() {
+        return merchantPrivateKey;
+    }
+
+    public void setMerchantPrivateKey(String merchantPrivateKey) {
+        this.merchantPrivateKey = merchantPrivateKey;
+    }
+
+    public String getAlipayPublicKey() {
+        return alipayPublicKey;
+    }
+
+    public void setAlipayPublicKey(String alipayPublicKey) {
+        this.alipayPublicKey = alipayPublicKey;
+    }
+
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
+    }
+
+    public String getReturnUrl() {
+        return returnUrl;
+    }
+
+    public void setReturnUrl(String returnUrl) {
+        this.returnUrl = returnUrl;
+    }
+
+    public String getSignType() {
+        return signType;
+    }
+
+    public void setSignType(String signType) {
+        this.signType = signType;
+    }
+
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
+    public String getGatewayUrl() {
+        return gatewayUrl;
+    }
+
+    public void setGatewayUrl(String gatewayUrl) {
+        this.gatewayUrl = gatewayUrl;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
 }

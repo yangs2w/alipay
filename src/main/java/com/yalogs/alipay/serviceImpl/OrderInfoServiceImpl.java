@@ -105,7 +105,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             return false;
         // 判断app_id是否相等
         // 因为前面都是正确的，那么这里只需要返回app_id的boolean就ok
-        return params.get("app_id").equals(orderInfo.getAlipayNo());
+        return params.get("app_id").equals(aliPayConfig.getAppId());
     }
 
     /**
