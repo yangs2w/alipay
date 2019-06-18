@@ -485,3 +485,77 @@ Caused by: com.baomidou.mybatisplus.core.exceptions.MybatisPlusException: Error:
 2019-06-16 00:17:52.066  INFO 10708 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2019-06-16 00:17:52.066  INFO 10708 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2019-06-16 00:17:52.075  INFO 10708 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2019-06-16 20:24:26.084  INFO 9776 --- [main] com.yalogs.alipay.AlipayApplication      : Starting AlipayApplication on DESKTOP-MJQAKAE with PID 9776 (D:\workspace\alipay\target\classes started by yangs in D:\workspace\alipay)
+2019-06-16 20:24:26.090  INFO 9776 --- [main] com.yalogs.alipay.AlipayApplication      : No active profile set, falling back to default profiles: default
+2019-06-16 20:24:28.601  INFO 9776 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-06-16 20:24:28.649  INFO 9776 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-16 20:24:28.650  INFO 9776 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-06-16 20:24:28.762  INFO 9776 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-16 20:24:28.763  INFO 9776 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2578 ms
+2019-06-16 20:24:28.994  INFO 9776 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-06-16 20:24:29.411  INFO 9776 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-06-16 20:24:30.138  INFO 9776 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-16 20:24:30.270  INFO 9776 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-06-16 20:24:30.497  INFO 9776 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-06-16 20:24:30.501  INFO 9776 --- [main] com.yalogs.alipay.AlipayApplication      : Started AlipayApplication in 5.291 seconds (JVM running for 7.38)
+2019-06-16 20:24:36.661  INFO 9776 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-16 20:24:36.661  INFO 9776 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-06-16 20:24:36.678  INFO 9776 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 16 ms
+2019-06-16 20:28:47.782  INFO 12492 --- [main] com.yalogs.alipay.AlipayApplication      : Starting AlipayApplication on DESKTOP-MJQAKAE with PID 12492 (D:\workspace\alipay\target\classes started by yangs in D:\workspace\alipay)
+2019-06-16 20:28:47.827  INFO 12492 --- [main] com.yalogs.alipay.AlipayApplication      : No active profile set, falling back to default profiles: default
+2019-06-16 20:28:50.643  INFO 12492 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-06-16 20:28:50.706  INFO 12492 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-16 20:28:50.707  INFO 12492 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-06-16 20:28:50.949  INFO 12492 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-16 20:28:50.951  INFO 12492 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2953 ms
+2019-06-16 20:28:52.996  INFO 12492 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-06-16 20:28:53.503  INFO 12492 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-06-16 20:28:54.441  INFO 12492 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-16 20:28:54.717  INFO 12492 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-06-16 20:28:55.254  INFO 12492 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-06-16 20:28:55.261  INFO 12492 --- [main] com.yalogs.alipay.AlipayApplication      : Started AlipayApplication in 8.468 seconds (JVM running for 13.346)
+2019-06-16 20:29:06.969  INFO 12492 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-16 20:29:06.969  INFO 12492 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-06-16 20:29:06.984  INFO 12492 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 15 ms
+2019-06-16 20:32:27.175  INFO 12492 --- [Thread-17] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-06-16 20:32:27.177  INFO 12492 --- [Thread-17] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2019-06-16 20:32:27.203  INFO 12492 --- [Thread-17] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2019-06-16 20:32:34.299  INFO 13496 --- [main] com.yalogs.alipay.AlipayApplication      : Starting AlipayApplication on DESKTOP-MJQAKAE with PID 13496 (D:\workspace\alipay\target\classes started by yangs in D:\workspace\alipay)
+2019-06-16 20:32:34.304  INFO 13496 --- [main] com.yalogs.alipay.AlipayApplication      : No active profile set, falling back to default profiles: default
+2019-06-16 20:32:35.975  INFO 13496 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-06-16 20:32:36.006  INFO 13496 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-16 20:32:36.006  INFO 13496 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-06-16 20:32:36.150  INFO 13496 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-16 20:32:36.150  INFO 13496 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1783 ms
+2019-06-16 20:32:36.409  INFO 13496 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-06-16 20:32:36.638  INFO 13496 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-06-16 20:32:37.308  INFO 13496 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-16 20:32:37.481  INFO 13496 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-06-16 20:32:37.809  INFO 13496 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-06-16 20:32:37.815  INFO 13496 --- [main] com.yalogs.alipay.AlipayApplication      : Started AlipayApplication in 4.541 seconds (JVM running for 6.848)
+2019-06-16 20:32:49.119  INFO 13496 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-16 20:32:49.119  INFO 13496 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-06-16 20:32:49.133  INFO 13496 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 14 ms
+2019-06-16 20:53:51.251  INFO 13496 --- [Thread-11] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-06-16 20:53:51.253  INFO 13496 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2019-06-16 20:53:51.276  INFO 13496 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2019-06-16 20:54:03.291  INFO 11080 --- [main] com.yalogs.alipay.AlipayApplication      : Starting AlipayApplication on DESKTOP-MJQAKAE with PID 11080 (D:\workspace\alipay\target\classes started by yangs in D:\workspace\alipay)
+2019-06-16 20:54:03.295  INFO 11080 --- [main] com.yalogs.alipay.AlipayApplication      : No active profile set, falling back to default profiles: default
+2019-06-16 20:54:04.771  INFO 11080 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-06-16 20:54:04.806  INFO 11080 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-16 20:54:04.806  INFO 11080 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-06-16 20:54:04.926  INFO 11080 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-16 20:54:04.926  INFO 11080 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1577 ms
+2019-06-16 20:54:05.140  INFO 11080 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-06-16 20:54:05.349  INFO 11080 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-06-16 20:54:05.987  INFO 11080 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-16 20:54:06.145  INFO 11080 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-06-16 20:54:06.425  INFO 11080 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-06-16 20:54:06.431  INFO 11080 --- [main] com.yalogs.alipay.AlipayApplication      : Started AlipayApplication in 4.03 seconds (JVM running for 7.0)
+2019-06-16 20:54:30.534  INFO 11080 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-16 20:54:30.534  INFO 11080 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-06-16 20:54:30.546  INFO 11080 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
+2019-06-16 21:16:01.693  WARN 11080 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m56s139ms233µs).
+2019-06-16 21:20:16.209  INFO 11080 --- [Thread-11] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-06-16 21:20:16.211  INFO 11080 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2019-06-16 21:20:16.235  INFO 11080 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

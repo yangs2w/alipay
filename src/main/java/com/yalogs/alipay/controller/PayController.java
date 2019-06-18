@@ -1,6 +1,8 @@
 package com.yalogs.alipay.controller;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.yalogs.alipay.config.AliPayConfig;
@@ -14,10 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -159,6 +163,77 @@ public class PayController {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     *
+     * 服务器异步通知，获取支付宝POST过来反馈信息
+     * 该方法无返回值，静默处理
+     * 订单的状态以该方法为主，其他的状态修改为辅
+     * 1）程序执行完必须打印出"success"
+     * 如果商户反馈给支付宝的字符不是success字符，会被支付宝服务器不断重发通知，知道超过24小时22分钟
+     * 2）程序之执行完后，该页面不能执行页面跳转
+     * 如果页面跳转后，支付宝会接收不到success字符，会被支付宝服务器误判为是服务器发生异常而重发处理结果
+     * 3）cookie,session等在此页面会失效，所以无法获取到
+     * 4）该方式通知与运行必须在服务器上，即互联网上能访问
+     *
+     * @Author yangs
+     * @Description //DOTO
+     * @Date 6/16/2019 8:00 PM
+     * @Param [request, response]
+     * @Return void
+     */
+    @RequestMapping(value = "/alipay/notify", method = RequestMethod.POST)
+    public void alipayNotify(HttpServletRequest request, HttpServletResponse response) {
+        /*
+         * 默认只有TRADE_SUCCESS会触发通知，如果需要开通其他通知，请联系客服申请
+         * 触发条件名        触发条件描述      触发条件默认值
+         * TRADE_FINISHED   交易完成        false(不发送通知)
+         * TRADE_SUCCESS    支付成功        true(触发通知)
+         * WAIT_BUYER_PAY   交易创建        false(不发送通知)
+         * TRADE_CLOSED     交易关闭        false(不发送通知)
+         * 来源：https://docs.open.alipay.com/270/105902/#s2
+         *
+         */
+        // 获取参数
+        Map<String, String> params = getPayParams(request);
+        try {
+            // 验证订单
+            boolean flag = orderInfoService.validOrder(params);
+            if (flag) {
+                // 商户订单号
+                String orderId = params.get("out_trade_no");
+                // 支付宝交易号
+                String tradeNo = params.get("trade_no");
+                // 交易状态
+                String tradeStatus = params.get("trade_status");
+                switch (tradeStatus) {
+                    case "WAIT_BUYER_PAY":
+                        orderInfoService.changeStatus(orderId, tradeStatus);
+                        break;
+                    case "TRADE_CLOSED":
+                        orderInfoService.changeStatus(orderId, tradeStatus);
+                        break;
+                    case "TRADE_FINISHED":
+                        orderInfoService.changeStatus(orderId, tradeStatus);
+                        break;
+                    case "TRADE_SUCCESS":
+                        orderInfoService.changeStatus(orderId, tradeStatus, tradeNo);
+                        break;
+                        default:break;
+                }
+                response.getWriter().write("success");
+            }else {
+                log.error("【支付宝异步方法】验证失败，错误信息:{}", AlipaySignature.getSignCheckContentV1(params));
+                response.getWriter().write("fail");
+            }
+        } catch (Exception e) {
+            log.error("【支付宝异步支付】异常，异常信息:{}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
 
     /**
      * 获取支付参数
