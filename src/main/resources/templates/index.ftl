@@ -289,6 +289,7 @@
             cache : false,
             async : false,
             success : function(res) {
+                console.log(res);
                 if(res.code === 0) {
                     $("#buyer_logon_id").text(res.data.buyer_logon_id);
                     $("#trade_status").text(res.data.trade_status);
@@ -297,7 +298,7 @@
                     $("#order_money").text(res.data.orderInfo.money);
                     $("#order_refund_money").text(res.data.orderInfo.refundMoney);
                     $("#order_status").text(res.data.orderInfo.status);
-
+                    console.log(res);
                     $("#queryModel").modal('show');
                 } else {
                     alert("错误！错误码：" + res.code + ",错误信息：" + res.info);

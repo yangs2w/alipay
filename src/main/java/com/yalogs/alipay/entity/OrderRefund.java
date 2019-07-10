@@ -9,14 +9,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @ClassName OrderRdfund
+ * @ClassName OrderRefund
  * @Description 订单退款
  * @Author yangs
  * @Date 6/10/2019 3:41 PM
  * @Version 1.0
  */
 @Data
-public class OrderRdfund implements Serializable {
+public class OrderRefund implements Serializable {
 
     // 退款号
     @TableId(type = IdType.INPUT)
@@ -37,4 +37,15 @@ public class OrderRdfund implements Serializable {
     // 退款时间
     private Date refundDate;
 
+    public OrderRefund() {
+    }
+
+    public OrderRefund(String refundId, String orderId, BigDecimal money, String account, String reason, Date refundDate) {
+        this.refundId = refundId;
+        this.orderId = orderId;
+        this.money = money;
+        this.account = account;
+        this.reason = reason;
+        this.refundDate = refundDate;
+    }
 }

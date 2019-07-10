@@ -2,6 +2,7 @@ package com.yalogs.alipay.serviceImpl;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yalogs.alipay.config.AliPayConfig;
 import com.yalogs.alipay.entity.OrderInfo;
@@ -139,6 +140,40 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setStatus(status);
         orderInfoMapper.updateById(orderInfo);
         return true;
+    }
+
+    @Override
+    public OrderInfo queryOrderInfoByOrderId(String orderId) {
+        return orderInfoMapper.selectById(orderId);
+    }
+
+    @Override
+    public OrderInfo queryOrderInfoByAlipayNo(String alipayNo) {
+        List<OrderInfo> list = orderInfoMapper.selectList(new QueryWrapper<OrderInfo>().eq("alipay_no", alipayNo));
+        if (null != list && list.size()> 0)
+            return list.get(0);
+        return null;
+    }
+
+    /**
+     * 修改OrderInfo的refundMoney
+     * @param orderInfo
+     * @return
+     */
+    @Override
+    public boolean setReFundMoney(OrderInfo orderInfo) {
+        int i = orderInfoMapper.updateById(orderInfo);
+        return i == 1;
+    }
+
+    /**
+     * 修改订单状态
+     * @param orderInfo
+     * @return
+     */
+    @Override
+    public boolean setStatus(OrderInfo orderInfo) {
+        return orderInfoMapper.updateById(orderInfo) == 1;
     }
 }
 

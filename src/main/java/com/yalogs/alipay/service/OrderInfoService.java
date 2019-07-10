@@ -33,4 +33,12 @@ public interface OrderInfoService extends IService<OrderInfo> {
     boolean validOrder(Map<String, String> params) throws AlipayApiException;
 
     boolean changeStatus(String orderId, String status, String... tradeNo);
+
+    OrderInfo queryOrderInfoByOrderId(String orderId);
+
+    OrderInfo queryOrderInfoByAlipayNo(String alipayNo);
+
+    boolean setReFundMoney(OrderInfo orderInfo);
+
+    boolean setStatus(OrderInfo orderInfo);
 }

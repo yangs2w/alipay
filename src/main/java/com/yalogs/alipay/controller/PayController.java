@@ -3,26 +3,38 @@ package com.yalogs.alipay.controller;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradePagePayResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.yalogs.alipay.common.Result;
+import com.yalogs.alipay.common.ResultEnum;
 import com.yalogs.alipay.config.AliPayConfig;
 import com.yalogs.alipay.entity.OrderInfo;
+import com.yalogs.alipay.entity.OrderRefund;
 import com.yalogs.alipay.service.OrderInfoService;
+import com.yalogs.alipay.service.OrderRefundService;
 import com.yalogs.alipay.utils.JsonUtils;
+import com.yalogs.alipay.utils.RandomUtils;
+import freemarker.template.utility.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +60,8 @@ public class PayController {
     private AliPayConfig aliPayConfig;
     @Autowired
     private AlipayClient alipayClient;
+    @Autowired
+    private OrderRefundService orderRefundService;
 
 
     @RequestMapping(value = "/")
@@ -56,7 +70,170 @@ public class PayController {
         return modelAndView;
     }
 
-    /*/**
+    /**
+     *  支付退款查询
+     * @param orderId 订单号
+     * @param alipayNo 支付宝交易号
+     * @param refundId 退款号
+     * @return
+     */
+    @RequestMapping(value = "/alipay/refund/query", method = RequestMethod.POST)
+    @ResponseBody
+    public Result refundQuery(String orderId, String alipayNo, String refundId) {
+        if (StringUtils.isBlank(orderId) || StringUtils.isBlank(alipayNo) || StringUtils.isBlank(refundId)) {
+            return Result.error(ResultEnum.PARAMS_ERROR);
+        }
+        // 直接先向支付宝查询咋们的退款是否存在
+        AlipayTradeFastpayRefundQueryRequest refundQueryRequest = new AlipayTradeFastpayRefundQueryRequest();
+        Map<String, String> queryParam = new HashMap<>(16);
+        queryParam.put("trade_no", orderId);
+        queryParam.put("out_trade_no", alipayNo);
+        queryParam.put("out_request_no", refundId);
+        refundQueryRequest.setBizContent(JsonUtils.objectToJson(queryParam));
+        // 向支付宝发起请求
+        try {
+            AlipayTradeFastpayRefundQueryResponse refundQueryResponse = alipayClient.pageExecute(refundQueryRequest);
+            // 向支付宝查询退款成功
+            if (refundQueryResponse.isSuccess() && "10000".equals(refundQueryResponse.getCode())) {
+                // 向数据库查询退款的账户
+                OrderRefund orderRefund = orderRefundService.getOrderRefundByRefundId(refundId);
+                if (orderRefund == null)
+                    return Result.error(ResultEnum.ALIPAY_QUERY_ERROR);
+                return Result.ok(null, orderRefund);
+            }
+            return Result.error(ResultEnum.ALIPAY_QUERY_ERROR);
+        }catch (Exception e) {
+            log.error("【退款查询】失败，失败原因:{}", e.getMessage());
+            e.printStackTrace();
+        }
+        return Result.error(ResultEnum.ORDER_NOT_EXIST);
+    }
+
+
+    /**
+     * 支付宝退款
+     * @param orderId
+     * @param alipayNo
+     * @param money
+     * @param reason
+     * @return
+     */
+    @RequestMapping(value = "/alipay/refund", method = RequestMethod.POST)
+    @ResponseBody
+    public Result refund(String orderId, String alipayNo, String money, String reason) {
+        // 判断orderId或者是alipyNo是否为空
+        OrderInfo orderInfo = null;
+        if (StringUtils.isNotBlank(orderId)) {
+            // 向数据库查询订单状态
+            orderInfo = orderInfoService.queryOrderInfoByOrderId(orderId);
+        }else if (StringUtils.isNotBlank(alipayNo)) {
+            orderInfo = orderInfoService.queryOrderInfoByAlipayNo(alipayNo);
+        }else {
+            return Result.error(ResultEnum.ORDER_NOT_EXIST);
+        }
+        // 只有订单为TRADE_SUCCESS才能退款
+        if (!"TRADE_SUCCESS".equals(orderInfo.getStatus())) {
+            return Result.error(ResultEnum.ORDER_STATUS_NOT_SUPPORT);
+        }
+        // 检查退款金额是否超标
+        if (orderInfo.getMoney().subtract(orderInfo.getRefundMoney()).doubleValue() < Double.valueOf(money)) {
+            return Result.error(ResultEnum.MONEY_ERROR);
+        }
+        // 生成RefundId
+        String refundId = RandomUtils.time();
+        // 先向支付宝发送退款请求
+        AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
+        // 承载参数
+        Map<String, String> param = new HashMap<>(16);
+        param.put("out_trade_no", orderId);
+        param.put("trade_no", alipayNo);
+        param.put("refund_amount", money);
+        param.put("refund_reason", reason);
+        param.put("out_request_no", refundId);
+        alipayRequest.setBizContent(JsonUtils.objectToJson(param));
+        // 提交参数
+        try {
+            AlipayTradeRefundResponse refundResponse = alipayClient.execute(alipayRequest);
+            if ("10000".equals(refundResponse.getCode())) {
+                BigDecimal refundMoney = new BigDecimal(refundResponse.getRefundFee());
+                OrderRefund orderRefund = orderRefundService.generateRefund(refundId, refundResponse.getOutTradeNo(), refundMoney,
+                        refundResponse.getBuyerUserId(), reason, new Date());
+                // 判断是否以全额退款
+                if (orderInfo.getMoney().compareTo(orderInfo.getRefundMoney().add(refundMoney)) == 0) {
+                    // 修改OrderInfo的Status
+                    orderInfo.setStatus("TRADE_CLOSED");
+                    orderInfo.setUpdateDate(new Date());
+                    orderInfoService.setStatus(orderInfo);
+                }
+                // 修改orderInfo的RefundMoney字段
+                orderInfo.setRefundMoney(new BigDecimal(money));
+                orderInfo.setUpdateDate(new Date());
+                orderInfoService.setReFundMoney(orderInfo);
+                return Result.ok();
+            }
+        } catch (AlipayApiException e) {
+            log.error("【申请退款】失败，失败原因:{}", e.getMessage());
+            e.printStackTrace();
+            return Result.error(ResultEnum.ALIPAY_REFUND_ERROR);
+        }
+        return Result.error(ResultEnum.ALIPAY_REFUND_ERROR);
+    }
+
+
+    /**
+     * 订单查询
+     * 通过订单号或者是支付宝交易号查询订单信息
+     * @param orderId
+     * @param alipayNo
+     */
+    @RequestMapping(value = "/alipay/query")
+    @ResponseBody
+    public Result queryOrder(String orderId, String alipayNo) {
+        Map<String, Object> result = new HashMap<>();
+        // 判断orderId或者是alipayNo是否是有效的
+//        if ("".equals(orderId) && "".equals(alipayNo)) {
+//            return Result.error(1, "参数错误");
+//        }
+        if (!StringUtils.isNotBlank(orderId) && !StringUtils.isNotBlank(alipayNo)) {
+            return Result.error(ResultEnum.ORDER_NOT_EXIST);
+        }
+        AlipayTradeQueryRequest alipayRequest = new AlipayTradeQueryRequest();
+        Map<String, String> queryParam = new HashMap<>();
+        queryParam.put("trade_no", alipayNo);
+        queryParam.put("out_trade_no", orderId);
+        alipayRequest.setBizContent(JsonUtils.objectToJson(queryParam));
+        // 提交查询
+        try {
+            AlipayTradeQueryResponse queryResponse = alipayClient.execute(alipayRequest);
+            if (queryResponse.isSuccess() && "10000".equals(queryResponse.getCode())) {
+                // 订单在支付宝查询成功，再向数据库查询订单信息
+                OrderInfo orderInfo = null;
+                if (StringUtils.isNotBlank(orderId)) {
+                    orderInfo = orderInfoService.queryOrderInfoByOrderId(orderId);
+                }else if (StringUtils.isNotBlank(alipayNo)){
+                    orderInfo = orderInfoService.queryOrderInfoByAlipayNo(alipayNo);
+                }
+                assert orderInfo != null;
+                if (!queryResponse.getTradeNo().equals(orderInfo.getAlipayNo())) {
+                    log.error("【订单交易查询】失败，错误信息:{}", "支付宝返回的trade_no和数据库查询的alipayNo不符合");
+                    return Result.error(ResultEnum.ALIPAY_QUERY_ERROR);
+                }
+                result.put("buyer_logon_id", queryResponse.getBuyerLogonId());
+                result.put("trade_status", queryResponse.getTradeStatus());
+                result.put("orderInfo", orderInfo);
+                return Result.ok(null, result);
+            }else {
+                log.error("【订单交易查询】失败，错误信息:{}", queryResponse.getSubMsg());
+                return Result.error(ResultEnum.ORDER_NOT_EXIST);
+            }
+        }catch (Exception e) {
+            log.error("【订单交易查询】失败，错误信息:{}", e.getMessage());
+        }
+        return Result.error(ResultEnum.ORDER_NOT_EXIST);
+    }
+
+
+    /**
      * 支付宝支付
      * 支付成功后，response直接写回结果值
      * @Author yangs
